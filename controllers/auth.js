@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 exports.login = async (req, res) =>{
     try {
         const {email, password} = req.body;
-
+        if (!req.signed)
         if(!email || !password){
             return res.status(400).render('login', {
                 message: 'Email eller adgangskode må ikke være tom'
@@ -24,11 +24,12 @@ exports.login = async (req, res) =>{
                 res.status(401).render('login', {
                     message: 'Email eller adgangskode er forkert'
                 })
+            } else {
+                res.status(200).redirect("/files");
             }
         })
     } catch (error) {
         console.log(error);
-
     }
 }
 

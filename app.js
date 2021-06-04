@@ -3,6 +3,7 @@ const path = require('path');
 const mysql = require("mysql");
 const { rootCertificates } = require("tls");
 const dotenv = require("dotenv");
+const upload = require('express-fileupload');
 
 dotenv.config({path: './.env'});
 
@@ -22,6 +23,7 @@ app.use(express.static(publicDirectory));
 app.use(express.urlencoded({ extended: false }));
 //Sikrer at værdierne vi får fra forms kommer i json format
 app.use(express.json());
+app.use(upload());
 
 app.set('view engine', 'hbs');
 
@@ -36,6 +38,8 @@ if(error){
 //definerer vores routes til linkene på siden
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
+
+
 
 app.listen(5001, ()=>{
     console.log("Server started on port 5001");
